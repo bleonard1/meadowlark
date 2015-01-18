@@ -3,6 +3,7 @@
 var express    = require("express");
 var app        = express();
 var handlebars = require("express-handlebars").create({defaultLayout: "main", extname: ".hbs"});
+var fortune    = require("./lib/fortune.js") // ./ so Node doesn't look in node_modules
 
 // app.engine("hbs", handlebars.engine);
 app.engine('.hbs', handlebars.engine);
@@ -19,8 +20,7 @@ app.get("/", function(req, res) {
 
 // About
 app.get("/about", function(req, res) {
-	var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-	res.render("about", {title: "About - ", fortune: randomFortune});
+	res.render("about", {title: "About - ", fortune: fortune.getFortune() });
 });
 
 // Custom 404, note app.use (middleware)
