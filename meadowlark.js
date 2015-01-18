@@ -3,7 +3,7 @@
 var express    = require("express");
 var app        = express();
 var handlebars = require("express-handlebars").create({defaultLayout: "main", extname: ".hbs"});
-var fortune    = require("./lib/fortune.js") // ./ so Node doesn't look in node_modules
+var fortune    = require("./lib/fortunes.js") // ./ so Node doesn't look in node_modules
 
 // app.engine("hbs", handlebars.engine);
 app.engine('.hbs', handlebars.engine);
@@ -41,12 +41,3 @@ app.listen(app.get("port"), function() {
 });
 
 
-var fortunes = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will have a pleasant surprise.",
-	"Whenever possible, keep it simple.",
-	"Don't find fault. Find a remedy.",
-	"Do or do not. There is no try."
-];
