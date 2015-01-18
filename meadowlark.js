@@ -1,9 +1,9 @@
-// The app file
+// The app file, req = request, res = response
 
 var express    = require("express");
 var app        = express();
 var handlebars = require("express-handlebars").create({defaultLayout: "main", extname: ".hbs"});
-var fortune    = require("./lib/fortunes.js") // ./ so Node doesn't look in node_modules
+var fortune    = require("./lib/fortunes.js"); // ./ so Node doesn't look in node_modules
 
 // app.engine("hbs", handlebars.engine);
 app.engine('.hbs', handlebars.engine);
@@ -13,14 +13,24 @@ app.set("port", process.env.PORT || 3000);
 // Public folder
 app.use(express.static(__dirname + "/public"));
 
-//Home, note app.get
+// Show/hide Moca tests
+app.use(function(req, res, next) {
+	res.locals.showTests = app.get("env") !== "production" && req.query.test === "1";
+	next();
+});
+
+// Home, note app.get
 app.get("/", function(req, res) {
 	res.render("home", {title: "Home - "});
 });
 
 // About
 app.get("/about", function(req, res) {
-	res.render("about", {title: "About - ", fortune: fortune.getFortune() });
+	res.render("about", {
+		title: "About - ",
+		fortune: fortune.getFortune(),
+		pageTestScript: "/qa/tests-about.js"
+	});
 });
 
 // Custom 404, note app.use (middleware)
@@ -33,7 +43,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
 	console.log(err.atack);
 	res.status(500);
-	res.render("500")
+	res.render("500");
 });
 
 app.listen(app.get("port"), function() {
