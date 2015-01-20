@@ -33,6 +33,27 @@ app.get("/about", function(req, res) {
 	});
 });
 
+// Tours - Hood River
+app.get("/tours/hood-river", function(req, res) {
+	res.render("tours/hood-river", {
+		title: "Hood River Tour - "
+	});
+});
+
+// Tours - Oregon Coast
+app.get("/tours/oregon-coast", function(req, res) {
+	res.render("tours/oregon-coast", {
+		title: "Oregon Coast Tour - "
+	});
+});
+
+//Tours - Group Rate Request
+app.get("/tours/request-group-rate", function(req, res) {
+	res.render("tours/request-group-rate", {
+		title: "Group Rate Request - "
+	});
+});
+
 // Custom 404, note app.use (middleware)
 app.use(function(req, res, next) {
 	res.status(404);
@@ -41,7 +62,6 @@ app.use(function(req, res, next) {
 
 // Custom 500 (middleware)
 app.use(function(err, req, res, next) {
-	console.log(err.atack);
 	res.status(500);
 	res.render("500");
 });

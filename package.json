@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "BLeonard",
+  "author": "Bryan Leonard",
   "license": "MIT",
   "dependencies": {
     "express": "^4.11.0",
@@ -14,6 +14,10 @@
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "mocha": "^2.1.0"
+    "grunt": "^0.4.5",
+    "grunt-cafe-mocha": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "mocha": "^2.1.0",
+    "zombie": "^2.5.1"
   }
 }
