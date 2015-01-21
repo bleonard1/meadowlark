@@ -1,17 +1,26 @@
 // The app file, req = request, res = response
 
-var express    = require("express");
-var app        = express();
-var handlebars = require("express-handlebars").create({defaultLayout: "main", extname: ".hbs"});
-var fortune    = require("./lib/fortunes.js"); // ./ so Node doesn't look in node_modules
+var express    = require("express"),
+	app        = express(),
+	handlebars = require("express-handlebars").create( {defaultLayout: "main", extname: ".hbs"} ),
+	routeHome                  = require('./routes/home'),
+	routeAbout                 = require('./routes/about'),
+	routeContact               = require('./routes/contact'),
+	routeToursHoodRiver        = require('./routes/tours-hood-river'),
+	routeToursOregonCoast      = require('./routes/tours-oregon-coast'),
+	routeToursRequestGroupRate = require('./routes/request-group-rate');
 
-// app.engine("hbs", handlebars.engine);
-app.engine('.hbs', handlebars.engine);
-app.set("view engine", ".hbs");
+
+app.engine('hbs', handlebars.engine);
+app.set("view engine", "hbs");
 app.set("port", process.env.PORT || 3000);
+app.disable('x-powered-by');
 
-// Public folder
+
+// Public folder and partials
 app.use(express.static(__dirname + "/public"));
+// handlebars.registerPartials(__dirname + '/views/partials'); // <-- This may fail.
+
 
 // Show/hide Moca tests
 app.use(function(req, res, next) {
@@ -19,55 +28,82 @@ app.use(function(req, res, next) {
 	next();
 });
 
-// Home, note app.get
-app.get("/", function(req, res) {
-	res.render("home", {title: "Home - "});
-});
 
-// About
-app.get("/about", function(req, res) {
-	res.render("about", {
-		title: "About - ",
-		fortune: fortune.getFortune(),
-		pageTestScript: "/qa/tests-about.js"
-	});
-});
+// Routes
+app.use('/', routeHome);
+app.use('/about', routeAbout);
+app.use('/contact', routeContact);
+app.use('/tours/hood-river', routeToursHoodRiver);
+app.use('/tours/oregon-coast', routeToursOregonCoast);
+app.use('/tours/request-group-rate', routeToursRequestGroupRate);
 
-// Tours - Hood River
-app.get("/tours/hood-river", function(req, res) {
-	res.render("tours/hood-river", {
-		title: "Hood River Tour - "
-	});
-});
 
-// Tours - Oregon Coast
-app.get("/tours/oregon-coast", function(req, res) {
-	res.render("tours/oregon-coast", {
-		title: "Oregon Coast Tour - "
-	});
-});
-
-//Tours - Group Rate Request
-app.get("/tours/request-group-rate", function(req, res) {
-	res.render("tours/request-group-rate", {
-		title: "Group Rate Request - "
-	});
+app.use(function(req, res, next) {
+	if (!res.locals.partials) res.locals.partials = {};
+	res.locals.partials.weather = getWeatherData();
+	next();
 });
 
 // Custom 404, note app.use (middleware)
 app.use(function(req, res, next) {
 	res.status(404);
 	res.render("404", {title: "Whoopsie Daisy! - "});
+	console.log(res);
 });
+
 
 // Custom 500 (middleware)
 app.use(function(err, req, res, next) {
 	res.status(500);
-	res.render("500");
+	res.render("500", {
+		message: err.message,
+		error: err
+	});
 });
+
 
 app.listen(app.get("port"), function() {
-	console.log("Express started on localhost:" + app.get("port") + " press Ctrl_C to exit.");
+	console.log("Express started on localhost:" + app.get("port") + ".");
 });
 
+
+
+
+function getWeatherData() {
+	return {
+		locations: [
+			{
+				name: 'Portland',
+				forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
+				iconUrl: 'http://icons-ak.wxug.com/i/c/k/cloudy.gif',
+				weather: 'Overcast',
+				temp: '54.1 F (12.3 C)',
+			},
+			{
+				name: 'Bend',
+				forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
+				iconUrl: 'http://icons-ak.wxug.com/i/c/k/partlycloudy.gif',
+				weather: 'Partly Cloudy',
+				temp: '55.0 F (12.8 C)',
+			},
+			{
+				name: 'Manzanita',
+				forecastUrl: 'http://www.wunderground.com/US/OR/Manzanita.html',
+				iconUrl: 'http://icons-ak.wxug.com/i/c/k/rain.gif',
+				weather: 'Light Rain',
+				temp: '55.0 F (12.8 C)',
+			},
+		],
+	};
+};
+
+
+
+
+
+
+
+
+
+module.exports = app;
 
