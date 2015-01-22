@@ -2,13 +2,24 @@
 
 var express    = require("express"),
 	app        = express(),
-	handlebars = require("express-handlebars").create( {defaultLayout: "main", extname: ".hbs"} ),
+	handlebars = require("express-handlebars").create( {
+		defaultLayout: "main", 
+		extname: ".hbs",
+		helpers: {
+			section: function(name, options) {
+				if (!this._sections) this._sections = {};
+				this._sections[name] = options.fn(this);
+				return null;
+			}
+		}
+	} ),
 	routeHome                  = require('./routes/home'),
 	routeAbout                 = require('./routes/about'),
 	routeContact               = require('./routes/contact'),
 	routeToursHoodRiver        = require('./routes/tours-hood-river'),
 	routeToursOregonCoast      = require('./routes/tours-oregon-coast'),
 	routeToursRequestGroupRate = require('./routes/request-group-rate');
+	routeTest                  = require('./routes/test'),
 
 
 app.engine('hbs', handlebars.engine);
@@ -20,11 +31,18 @@ app.disable('x-powered-by');
 // Public folder and partials
 app.use(express.static(__dirname + "/public"));
 // handlebars.registerPartials(__dirname + '/views/partials'); // <-- This may fail.
-
+ 
 
 // Show/hide Moca tests
 app.use(function(req, res, next) {
 	res.locals.showTests = app.get("env") !== "production" && req.query.test === "1";
+	next();
+});
+
+// Weather widget
+app.use(function(req, res, next) {
+	if (!res.locals.partials) res.locals.partials = {};
+	res.locals.partials.weather = getWeatherData();
 	next();
 });
 
@@ -36,19 +54,14 @@ app.use('/contact', routeContact);
 app.use('/tours/hood-river', routeToursHoodRiver);
 app.use('/tours/oregon-coast', routeToursOregonCoast);
 app.use('/tours/request-group-rate', routeToursRequestGroupRate);
+app.use('/test', routeTest);
 
-
-app.use(function(req, res, next) {
-	if (!res.locals.partials) res.locals.partials = {};
-	res.locals.partials.weather = getWeatherData();
-	next();
-});
 
 // Custom 404, note app.use (middleware)
 app.use(function(req, res, next) {
 	res.status(404);
 	res.render("404", {title: "Whoopsie Daisy! - "});
-	console.log(res);
+	// console.log('response: ', res);
 });
 
 
@@ -65,7 +78,6 @@ app.use(function(err, req, res, next) {
 app.listen(app.get("port"), function() {
 	console.log("Express started on localhost:" + app.get("port") + ".");
 });
-
 
 
 
@@ -96,13 +108,6 @@ function getWeatherData() {
 		],
 	};
 };
-
-
-
-
-
-
-
 
 
 module.exports = app;

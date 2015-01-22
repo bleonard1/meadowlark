@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+{{{_sections.head}}}
 
 {{#if showTests}}
 	<link rel="stylesheet" href="/vendor/mocha.css">
@@ -44,6 +45,8 @@
 	{{/if}}
 	<script>mocha.run();</script>
 {{/if}}
+
+{{{_sections.jquery}}}
 
 </body>
 </html>
