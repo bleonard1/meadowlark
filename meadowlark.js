@@ -4,7 +4,7 @@ var express    = require("express"),
 	app        = express(),
 	handlebars = require("express-handlebars").create( {
 		defaultLayout: "main", 
-		extname: ".hbs",
+		extname: "hbs",
 		helpers: {
 			section: function(name, options) {
 				if (!this._sections) this._sections = {};
@@ -13,13 +13,12 @@ var express    = require("express"),
 			}
 		}
 	} ),
-	routeHome                  = require('./routes/home'),
-	routeAbout                 = require('./routes/about'),
-	routeContact               = require('./routes/contact'),
-	routeToursHoodRiver        = require('./routes/tours-hood-river'),
-	routeToursOregonCoast      = require('./routes/tours-oregon-coast'),
-	routeToursRequestGroupRate = require('./routes/request-group-rate');
-	routeTest                  = require('./routes/test'),
+	routeHome                  = require("./routes/index"),
+	routeTest                  = require("./routes/test"),
+	routeAbout                 = require("./routes/about"),
+	routeContact               = require("./routes/contact"),
+	routeTours                 = require("./routes/tours/index"),
+	routeNurseryRhymes 		   = require("./routes/nursery-rhymes");
 
 
 app.engine('hbs', handlebars.engine);
@@ -28,7 +27,7 @@ app.set("port", process.env.PORT || 3000);
 app.disable('x-powered-by');
 
 
-// Public folder and partials
+// Public folder 
 app.use(express.static(__dirname + "/public"));
 // handlebars.registerPartials(__dirname + '/views/partials'); // <-- This may fail.
  
@@ -49,12 +48,24 @@ app.use(function(req, res, next) {
 
 // Routes
 app.use('/', routeHome);
+app.use('/test', routeTest);
 app.use('/about', routeAbout);
 app.use('/contact', routeContact);
-app.use('/tours/hood-river', routeToursHoodRiver);
-app.use('/tours/oregon-coast', routeToursOregonCoast);
-app.use('/tours/request-group-rate', routeToursRequestGroupRate);
-app.use('/test', routeTest);
+app.use('/tours', routeTours); //combine into a single tours route with the specifc tour
+app.use('/tours/hood-river', routeTours); 
+app.use('/tours/oregon-coast', routeTours); 
+app.use('/tours/request-group-rate', routeTours); 
+app.use('/nursery-rhymes', routeNurseryRhymes);
+
+
+app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /data/data/nursery-rhymes (or whatever the issue is)
+	res.json({
+        animal: 'squirrel',
+        bodyPart: 'tail',
+        adjective: 'bushy',
+        noun: 'heck',
+	});
+});
 
 
 // Custom 404, note app.use (middleware)

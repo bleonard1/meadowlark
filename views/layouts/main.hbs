@@ -2,37 +2,63 @@
 <html>
 <head>
 <meta charset="UTF-8">
+	<link rel="stylesheet" href="/vendor/bootstrap-3.3.2/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/styles.css">
 {{{_sections.head}}}
-
 {{#if showTests}}
 	<link rel="stylesheet" href="/vendor/mocha.css">
 {{/if}}
-
-<script src="//code.jquery.com/jquery-2.0.2.min.js"></script>
-
 <title>{{{title}}}Meadowland Travel</title>
 </head>
-
 <body>
 
-<header>
-	<img src="/imgs/owl.jpg" alt="Meadowlark Travel Logo" height="320">
-</header>
-<nav>
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="/about">About</a></li>
-		<li><a href="/contact">Contact</a></li>
-		<li><a href="/tours/oregon-coast">Oregon Coast</a></li>
-		<li><a href="/tours/hood-river">Hood River</a></li>
-		<li><a href="/tours/request-group-rate">Request Group Rate</a></li>
-	</ul>
-</nav>
+<section class="container">
+	<!-- 
+	<header style="float: left; margin-bottom: 1em">
+	<img src="/imgs/owl.jpg" alt="Meadowlark Travel Logo" class="img-responsive">
+	</header> 
+	-->
+	<header class="row">
+		<div class="col-sm-12">
+			<div class="page-header">
+			  <h1>Meadowlark Travel Agency <small>We love owls.</small></h1>
+			</div>
+		</div>
+	</header>
 
+	<nav class="navbar">
+		<ul class="nav nav-pills">
+			<li><a href="/">Home <span class="sr-only">(current)</span></a></li>
+			<li><a href="/about">About</a></li>
+			<li><a href="/contact">Contact</a></li>
+			<li><a href="/nursery-rhymes">Nursery Rhymes</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tours <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="/tours/oregon-coast">Oregon Coast</a></li>
+					<li><a href="/tours/hood-river">Hood River</a></li>
+					<li class="divider"></li>
+					<li><a href="/tours/request-group-rate">Request Group Rate</a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+
+</section><!-- /container -->
+
+<section class="container">
 {{{body}}}
+</section>
 
 {{#if showTests}}
-	<div id="mocha"></div>
+	<section class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="mocha"></div>
+			</div>
+		</div>
+	</section>
+
 	<script src="/vendor/mocha.js"></script>
 	<script src="/vendor/chai.js"></script>
 	<script>
@@ -46,6 +72,8 @@
 	<script>mocha.run();</script>
 {{/if}}
 
+<script src="//code.jquery.com/jquery-2.0.2.min.js"></script>
+<script src="/vendor/bootstrap-3.3.2/js/bootstrap.js"></script>
 {{{_sections.jquery}}}
 
 </body>

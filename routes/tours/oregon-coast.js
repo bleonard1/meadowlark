@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res) {
-	res.render("tours/oregon-coast", {
+router.get('tours', function(req, res) {
+	res.render("oregon-coast", {
 		title: "Oregon Coast Tour - "
 	});
 });

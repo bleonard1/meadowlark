@@ -9,6 +9,7 @@
   "author": "Bryan Leonard",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.10.2",
     "express": "^4.11.0",
     "express-handlebars": "^1.1.0"
   },
