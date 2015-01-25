@@ -18,7 +18,7 @@ router.get('/oregon-coast', function(req, res) {
 		title: "Oregon Coast Tours - "
 	});
 });
-router.get('/', function(req, res) {
+router.get('/request-group-rate', function(req, res) {
 	res.render("tours/request-group-rate", {
 		title: "Request Group Rate - "
 	});
