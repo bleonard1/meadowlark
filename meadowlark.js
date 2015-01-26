@@ -1,7 +1,10 @@
 // The app file, req = request, res = response
 
 var express    = require("express"),
+	favicon    = require('serve-favicon'),
 	app        = express(),
+	bodyParser = require("body-parser"),
+	formidable = require("formidable"),
 	handlebars = require("express-handlebars").create( {
 		defaultLayout: "main", 
 		extname: "hbs",
@@ -19,6 +22,9 @@ var express    = require("express"),
 	routeContact               = require("./routes/contact"),
 	routeTours                 = require("./routes/tours/index"),
 	routeNurseryRhymes 		   = require("./routes/nursery-rhymes");
+	routeNewsletter 		   = require("./routes/newsletter");
+	routeThankYou 		  	   = require("./routes/thank-you");
+	routeContest 		  	   = require("./routes/contest/vacation-photos");
 
 
 app.engine('hbs', handlebars.engine);
@@ -30,6 +36,8 @@ app.disable('x-powered-by');
 // Public folder 
 app.use(express.static(__dirname + "/public"));
 // handlebars.registerPartials(__dirname + '/views/partials'); // <-- This may fail.
+
+app.use(favicon(__dirname + '/public/imgs/favicon.png'));
  
 
 // Show/hide Moca tests
@@ -45,6 +53,11 @@ app.use(function(req, res, next) {
 	next();
 });
 
+//Form processing
+// app.use(require("body-parser")()); Is now deprecated, use the below to call the methods separately
+app.use( bodyParser.urlencoded({ extended: true }) );
+app.use( bodyParser.json() );
+
 
 // Routes
 app.use('/', routeHome);
@@ -56,6 +69,9 @@ app.use('/tours/hood-river', routeTours);
 app.use('/tours/oregon-coast', routeTours); 
 app.use('/tours/request-group-rate', routeTours); 
 app.use('/nursery-rhymes', routeNurseryRhymes);
+app.use('/newsletter', routeNewsletter);
+app.use('/thank-you', routeThankYou);
+app.use('/contest/vacation-photos', routeContest);
 
 
 app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /data/data/nursery-rhymes (or whatever the issue is)
@@ -67,12 +83,46 @@ app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /d
 	});
 });
 
+// app.post("/process", function(req, res) { // Pretty sure this doesn't work.
+// 	console.log("Form  (from qs): " + req.query.form);
+// 	console.log("CSRF token (from hidden field): " + req.body._csrf);
+// 	console.log("Name :", req.body.name);
+// 	console.log("Email :", req.body.email);
+// 	res.redirect(303, "/thank-you"); //Redirect updates the URL field where render wouldn't.
+// });
+
+app.post('/process', function(req, res){
+    if(req.xhr || req.accepts('json,html')==='json'){
+        // if there were an error, we would send { error: 'error description' }
+        res.send({ success: true });
+    } else {
+        // if there were an error, we would redirect to an error page
+        res.redirect(303, '/thank-you');
+    }
+});
+
+app.post("/contest/vacation-photos/:year/:month", function(req, res) {
+	var form = new formidable.IncomingForm();
+	
+	form.parse(req, function(err, fields, files) {
+		
+		if (err) {
+			return res.redirect(303, '/error');
+		}
+
+        console.log('received fields:');
+        console.log(fields);
+        console.log('received files:');
+        console.log(files);
+        res.redirect(303, '/thank-you');
+    });
+});
+
 
 // Custom 404, note app.use (middleware)
 app.use(function(req, res, next) {
 	res.status(404);
 	res.render("404", {title: "Whoopsie Daisy! - "});
-	// console.log('response: ', res);
 });
 
 
@@ -118,7 +168,7 @@ function getWeatherData() {
 			},
 		],
 	};
-};
+}
 
 
 module.exports = app;

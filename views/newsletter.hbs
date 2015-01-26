@@ -1,0 +1,61 @@
+<h2>Sign up for our newsletter!</h2>
+
+<div class="js-formContainer">
+	<form class="form-horizontal js-newsletterForm" role="form" action="/process?form=newsletter" method="POST">
+		<div class="form-group">
+			<label for="fieldName" class="col-sm-2 control-label">Hidden field:</label>
+			<div class="col-sm-4">
+				<input type="type" name="_csrf" value="{{csrf}}" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="fieldName" class="col-sm-2 control-label">Name</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="fieldName" name="name" value="John Doe">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="fieldEmail" class="col-sm-2 control-label">Email</label>
+			<div class="col-sm-4">
+				<input type="email" class="form-control" required id="fieldName" name="email" value="john@doe.com">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-4">
+				<button type="submit" class="btn btn-primary">Register</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+{{#section "jquery"}}
+<script>
+$(function(){
+	$(".js-newsletterForm").on("submit", function(e) {
+
+		e.preventDefault();
+		
+		var $this = $(this),
+			$container = $this.closest(".js-formContainer"),
+			action = $this.attr("action");
+
+		$.ajax({
+			url: action,
+			type: "POST",
+			success: function(data) {
+
+				$container.html( (data.success)? '<h3>Thank you!</h3>' : "<h3>Houston, we have a problem.</h3>");
+
+			},
+			error:function() {
+				$container.html("There was a problem submitting your information.");
+			}
+		});
+	});
+
+});
+</script>
+{{/section}}
