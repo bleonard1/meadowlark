@@ -5,6 +5,7 @@ var express    = require("express"),
 	app        = express(),
 	bodyParser = require("body-parser"),
 	formidable = require("formidable"),
+	jqupload = require('jquery-file-upload-middleware'),
 	handlebars = require("express-handlebars").create( {
 		defaultLayout: "main", 
 		extname: "hbs",
@@ -21,10 +22,11 @@ var express    = require("express"),
 	routeAbout                 = require("./routes/about"),
 	routeContact               = require("./routes/contact"),
 	routeTours                 = require("./routes/tours/index"),
-	routeNurseryRhymes 		   = require("./routes/nursery-rhymes");
-	routeNewsletter 		   = require("./routes/newsletter");
-	routeThankYou 		  	   = require("./routes/thank-you");
-	routeContest 		  	   = require("./routes/contest/vacation-photos");
+	routeNurseryRhymes 		   = require("./routes/nursery-rhymes"),
+	routeNewsletter 		   = require("./routes/newsletter"),
+	routeThankYou 		  	   = require("./routes/thank-you"),
+	routeContest 		  	   = require("./routes/contest/index")
+;
 
 
 app.engine('hbs', handlebars.engine);
@@ -53,6 +55,19 @@ app.use(function(req, res, next) {
 	next();
 });
 
+// File uploads
+app.use('/upload', function(req, res, next){
+	var now = Date.now();
+	jqupload.fileHandler({
+		uploadDir: function(){
+			return __dirname + '/public/uploads/' + now;
+		},
+		uploadUrl: function(){
+			return '/uploads/' + now;
+		},
+	})(req, res, next);
+});
+
 //Form processing
 // app.use(require("body-parser")()); Is now deprecated, use the below to call the methods separately
 app.use( bodyParser.urlencoded({ extended: true }) );
@@ -71,15 +86,16 @@ app.use('/tours/request-group-rate', routeTours);
 app.use('/nursery-rhymes', routeNurseryRhymes);
 app.use('/newsletter', routeNewsletter);
 app.use('/thank-you', routeThankYou);
+app.use('/contest', routeContest);
 app.use('/contest/vacation-photos', routeContest);
 
 
 app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /data/data/nursery-rhymes (or whatever the issue is)
 	res.json({
-        animal: 'squirrel',
-        bodyPart: 'tail',
-        adjective: 'bushy',
-        noun: 'heck',
+		animal: 'squirrel',
+		bodyPart: 'tail',
+		adjective: 'bushy',
+		noun: 'heck',
 	});
 });
 
@@ -92,13 +108,18 @@ app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /d
 // });
 
 app.post('/process', function(req, res){
-    if(req.xhr || req.accepts('json,html')==='json'){
-        // if there were an error, we would send { error: 'error description' }
-        res.send({ success: true });
-    } else {
-        // if there were an error, we would redirect to an error page
-        res.redirect(303, '/thank-you');
-    }
+	if(req.xhr || req.accepts('json,html')==='json'){
+		// if there were an error, we would send { error: 'error description' }
+		res.send({ success: true });
+	} else {
+		// if there were an error, we would redirect to an error page
+		res.redirect(303, '/thank-you');
+	}
+});
+
+app.get("/context/vacation-photos", function(req, res) {
+	var now = new Date();
+	res.render("contest/vacation-photo", { year: now.getFullYear(), month: now.getMonth() });
 });
 
 app.post("/contest/vacation-photos/:year/:month", function(req, res) {
@@ -110,12 +131,24 @@ app.post("/contest/vacation-photos/:year/:month", function(req, res) {
 			return res.redirect(303, '/error');
 		}
 
-        console.log('received fields:');
-        console.log(fields);
-        console.log('received files:');
-        console.log(files);
-        res.redirect(303, '/thank-you');
-    });
+		console.log('received fields:');
+		console.log(fields);
+		console.log('received files:');
+		console.log(files);
+		res.redirect(303, '/thank-you');
+	});
+});
+
+app.use("/upload", function(req, res, next) {
+	var now = Date.now();
+	jqupload.fileHandler({
+		uploadDir: function() {
+			return __dirname + "/public/uploads" + now;
+		},
+		uploadUrl: function() {
+			return "/uploads" + now;
+		}
+	})
 });
 
 
