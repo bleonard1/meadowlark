@@ -17,15 +17,16 @@ var express    = require("express"),
 			}
 		}
 	} ),
-	routeHome                  = require("./routes/index"),
-	routeTest                  = require("./routes/test"),
-	routeAbout                 = require("./routes/about"),
-	routeContact               = require("./routes/contact"),
-	routeTours                 = require("./routes/tours/index"),
-	routeNurseryRhymes 		   = require("./routes/nursery-rhymes"),
-	routeNewsletter 		   = require("./routes/newsletter"),
-	routeThankYou 		  	   = require("./routes/thank-you"),
-	routeContest 		  	   = require("./routes/contest/index")
+	// credentials 	   = require('./credentials.js'), //gitignore this cookie thing file module.exports = {secret: 'string',};
+	routeHome          = require("./routes/index"),
+	routeTest          = require("./routes/test"),
+	routeAbout         = require("./routes/about"),
+	routeContact       = require("./routes/contact"),
+	routeTours         = require("./routes/tours/index"),
+	routeNurseryRhymes = require("./routes/nursery-rhymes"),
+	routeNewsletter    = require("./routes/newsletter"),
+	routeThankYou      = require("./routes/thank-you"),
+	routeContest       = require("./routes/contest/index")
 ;
 
 
@@ -39,8 +40,12 @@ app.disable('x-powered-by');
 app.use(express.static(__dirname + "/public"));
 // handlebars.registerPartials(__dirname + '/views/partials'); // <-- This may fail.
 
+// Favicon
 app.use(favicon(__dirname + '/public/imgs/favicon.png'));
- 
+
+// Cookie, cookie, cookie
+//app.use(require('cookie-parser')(credentials.cookieSecret));
+
 
 // Show/hide Moca tests
 app.use(function(req, res, next) {
