@@ -2,13 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Oswald|Slabo+27px' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="/vendor/bootstrap-3.3.2/css/bootstrap.css">
 	<link rel="stylesheet" href="/css/styles.css">
 {{{_sections.head}}}
 {{#if showTests}}
 	<link rel="stylesheet" href="/vendor/mocha.css">
 {{/if}}
-<title>{{{title}}}Meadowland Travel</title>
+<title>{{{title}}}Meadowlark Travel</title>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
 	<header class="row">
 		<div class="col-sm-12">
 			<div class="page-header">
-			  <h1>Meadowlark Travel Agency <small>{We love owls}</small></h1>
+			  <h1>Meadowlark Travel Agency <small>(We love owls)</small></h1>
 			</div>
 		</div>
 	</header>
@@ -50,6 +51,14 @@
 			</li>
 		</ul>
 	</nav>
+
+	{{#if flash}}
+		<div class="alert alert-dismissable alert-{{flash.type}}">
+			<button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times</button>
+			<strong>{{flash.intro}}</strong>
+			{{{flash.message}}}
+		</div>
+	{{/if}}
 
 </section><!-- /container -->
 

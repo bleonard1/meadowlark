@@ -1,0 +1,28 @@
+{
+  "name": "meadowlark",
+  "version": "1.0.0",
+  "description": "Meadowlark Travel site",
+  "main": "meadowlark.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bryan Leonard",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.10.2",
+    "cookie-parser": "^1.3.3",
+    "express": "^4.11.0",
+    "express-handlebars": "^1.1.0",
+    "express-session": "^1.10.2",
+    "formidable": "^1.0.16",
+    "jquery-file-upload-middleware": "^0.1.7"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "grunt": "^0.4.5",
+    "grunt-cafe-mocha": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "mocha": "^2.1.0",
+    "zombie": "^2.5.1"
+  }
+}

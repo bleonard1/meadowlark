@@ -6,6 +6,7 @@ header small {
   float: right;
   line-height: 39px;
   vertical-align: text-bottom;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .btn-file {
   position: relative;
@@ -25,4 +26,11 @@ header small {
   background: white;
   cursor: inherit;
   display: block;
+}
+h1,
+h2,
+h3,
+h3,
+h5 {
+  font-family: 'Slabo 27px', 'Oswald', sans-serif;
 }

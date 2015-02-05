@@ -1,27 +1,37 @@
 {
   "name": "meadowlark",
   "version": "1.0.0",
-  "description": "Meadowlark Travel site",
+  "description": "Travel agency example project",
   "main": "meadowlark.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Bryan Leonard",
-  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.10.2",
-    "cookie-parser": "^1.3.3",
+    "chai": "^1.10.0",
     "express": "^4.11.0",
+    "cookie-parser": "^1.3.3",
     "express-handlebars": "^1.1.0",
+    "express-session": "^1.10.2",
+    "grunt": "^0.4.5",
     "formidable": "^1.0.16",
-    "jquery-file-upload-middleware": "^0.1.7"
+    "grunt-cafe-mocha": "^0.1.13",
+    "jquery-file-upload-middleware": "^0.1.7",
+    "grunt-contrib-jshint": "^0.10.0",
+    "serve-favicon": "^2.2.0",
+    "zombie": "^2.5.1"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "grunt": "^0.4.5",
-    "grunt-cafe-mocha": "^0.1.13",
-    "grunt-contrib-jshint": "^0.10.0",
-    "mocha": "^2.1.0",
-    "zombie": "^2.5.1"
-  }
+    "mocha": "^2.1.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bleonard1/meadowlark"
+  },
+  "author": "Bryan Leonard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bleonard1/meadowlark/issues"
+  },
+  "homepage": "https://github.com/bleonard1/meadowlark"
 }
