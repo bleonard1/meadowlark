@@ -12,25 +12,34 @@ var handlebars = require("express-handlebars").create( {
 			}
 		}
 	} );
+var fortune = require("./lib/fortunes.js");
 
-
+// Handlebars
 app.engine('hbs', handlebars.engine);
 app.set("view engine", "hbs");
+
+// Port and disable powered by header
 app.set("port", process.env.PORT || 3000);
 app.disable('x-powered-by');
 
-// Public folder 
+// Expose public folder 
 app.use(express.static(__dirname + "/public"));
 
 // Favicon
 app.use(favicon(__dirname + '/public/imgs/favicon.png'));
+
+// Show/hide Moca tests
+app.use(function(req, res, next) {
+	res.locals.showTests = app.get("env") !== "production" && req.query.test === "1";
+	next();
+});
 
 
 
 /**
  * Home Route
  */
-app.get('/', function(req, res){
+app.get("/", function(req, res){
         res.render("index", {
 		title: ""
 	})
@@ -39,14 +48,28 @@ app.get('/', function(req, res){
 /**
  * About Route
  */
-app.get('/about', function(req, res) {
-    var randomFortune = fortuneCookies[Math.floor(Math.random() * fortuneCookies.length)];
-        
+app.get("/about", function(req, res) {
     res.render("about", {
 		title: "About - ",
-		fortune: randomFortune
+		fortune: fortune.getFortune(),
+		pageTestScript: '/qa/tests-about.js'
 	});
 
+});
+
+
+/**
+ * Tours - Hood River
+ */
+app.get('/tours/hood-river', function(req, res){
+	res.render('tours/hood-river');
+});
+
+/**
+ * Tours - Group Rate Request
+ */
+app.get('/tours/request-group-rate', function(req, res){
+	res.render('tours/request-group-rate');
 });
 
 /**
@@ -77,14 +100,3 @@ app.listen( app.get("port"), function() {
 /**
  * Shite
  */
-var fortuneCookies = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will have a pleasant surprise.",
-	"Whenever possible, keep it simple.",
-	"Don't find fault. Find a remedy.",
-	"Do or do not. There is no try.",
-	"Goodness gracious, great balls of fire.",
-	"Don't be crazy. Be mentally shifted."
-];

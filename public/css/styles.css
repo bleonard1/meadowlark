@@ -2,11 +2,11 @@ header .page-header {
   margin-bottom: 10px;
 }
 header small {
-  font-size: 45%;
+  font-size: 50%;
   float: right;
   line-height: 39px;
   vertical-align: text-bottom;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Lobster", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .btn-file {
   position: relative;
@@ -33,4 +33,11 @@ h3,
 h3,
 h5 {
   font-family: 'Slabo 27px', 'Oswald', sans-serif;
+}
+.qa-test h1,
+.qa-test h2,
+.qa-test h3,
+.qa-test h3,
+.qa-test h5 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
