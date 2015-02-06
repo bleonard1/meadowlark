@@ -13,6 +13,7 @@ var handlebars = require("express-handlebars").create( {
 		}
 	} );
 var fortune = require("./lib/fortunes.js");
+var copyrightYear = new Date().getFullYear();
 
 // Handlebars
 app.engine('hbs', handlebars.engine);
@@ -40,6 +41,8 @@ app.use(function(req, res, next) {
 app.get('/headers', function(req,res){
 	res.set('Content-Type','text/plain');
 	var s = '';
+	req.headers['x-myHeader'] = "mine-mine-mine",
+	req.headers['x-remoteIP'] = req.ip;
 	for(var name in req.headers) s += name + ': ' + req.headers[name] + '\n';
 	res.send(s);
 });
@@ -50,7 +53,8 @@ app.get('/headers', function(req,res){
  */
 app.get("/", function(req, res){
         res.render("index", {
-		title: ""
+		title: "",
+		copyrightYear: copyrightYear
 	})
 });
 
@@ -60,6 +64,7 @@ app.get("/", function(req, res){
 app.get("/about", function(req, res) {
     res.render("about", {
 		title: "About - ",
+		copyrightYear: copyrightYear,
 		fortune: fortune.getFortune(),
 		pageTestScript: '/qa/tests-about.js'
 	});
@@ -71,14 +76,48 @@ app.get("/about", function(req, res) {
  * Tours - Hood River
  */
 app.get('/tours/hood-river', function(req, res){
-	res.render('tours/hood-river');
+	res.render('tours/hood-river', {
+		title: "Tours - ",
+		copyrightYear: copyrightYear,
+	});
+});
+
+/**
+ * Tours - Oregon Coast
+ */
+app.get('/tours/oregon-coast', function(req, res){
+	res.render('tours/oregon-coast', {
+		title: "Tours - ",
+		copyrightYear: copyrightYear,
+	});
 });
 
 /**
  * Tours - Group Rate Request
  */
 app.get('/tours/request-group-rate', function(req, res){
-	res.render('tours/request-group-rate');
+	res.render('tours/request-group-rate', {
+		title: "Group Rate - ",
+		copyrightYear: copyrightYear,
+	});
+});
+
+/**
+ * Nursery Rhyme
+ */
+app.get('/nursery-rhymes', function(req, res){
+        res.render('nursery-rhymes', {
+		title: "Nursery Rhymes, Sucka - ",
+		copyrightYear: copyrightYear,
+	});
+});
+app.get('/data/nursery-rhymes', function(req, res){
+        res.json({
+                animal: 'squirrel',
+                bodyPart: 'tail',
+                adjective: 'bushy',
+                noun: 'heck',
+        });
 });
 
 /**
@@ -86,7 +125,10 @@ app.get('/tours/request-group-rate', function(req, res){
  */
 app.use(function (req, res) {
 	res.status(404);
-	res.render("404")
+	res.render("404", {
+		title: "Whoops - ",
+		copyrightYear: copyrightYear
+	});
 });
 
 /**
@@ -95,7 +137,10 @@ app.use(function (req, res) {
 app.use(function(err, req, res, next){
         console.error(err.stack);
         res.status(500);
-        res.render("500");
+        res.render("500", {
+		title: "Whoops - ",
+		copyrightYear: copyrightYear
+	});
 });
 
 /**
