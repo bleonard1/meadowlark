@@ -30,8 +30,9 @@ var nodemailer    = require("nodemailer");
 // 	from: 'Meadowlark Travel <info@meadowlarktravel.com>', // sender address
 //     to: 'email-recipient@dot.com' // list of receivers
 //     subject: 'Your Meadowlark Travel Tour', // Subject line
-//     text: 'Thank you againg for booking with us! Your doodad is going to be so awesome. We will take care of you!', // plaintext body
+//     //text: 'Thank you againg for booking with us! Your doodad is going to be so awesome. We will take care of you!', // plaintext body
 //     html: '<b>Here is the HTML version!</b><p>Thank you againg for booking with us! Your doodad is going to be so awesome. We will take care of you!</p>' // html body
+//     ,generateTextFromHtml:true
 // };
 
 // // send mail with defined mailTransport object
