@@ -35,27 +35,26 @@
 {{#section "jquery"}}
 <script>
 $(function(){
-	$(".js-newsletterForm").on("submit", function(e) {
+	// $(".js-newsletterForm").on("submit", function(e) {
 
-		e.preventDefault();
+	// 	e.preventDefault();
 		
-		var $this = $(this),
-			$container = $this.closest(".js-formContainer"),
-			action = $this.attr("action");
+	// 	var $this = $(this),
+	// 		$container = $this.closest(".js-formContainer"),
+	// 		action = $this.attr("action");
 
-		$.ajax({
-			url: action,
-			type: "POST",
-			success: function(data) {
-
-				$container.html( (data.success)? '<h3>Thank you!</h3>' : "<h3>Houston, we have a problem.</h3>");
-
-			},
-			error:function() {
-				$container.html("There was a problem submitting your information.");
-			}
-		});
-	});
+	// 	$.ajax({
+	// 		url: action,
+	// 		type: "POST",
+	// 		success: function(data) {
+	// 			console.log(data);
+	// 			$container.html( (data.success)? '<h3>Thank you!</h3>' : "<h4>Uh oh...</h4>");
+	// 		},
+	// 		error: function() {
+	// 			$container.html("There was a problem submitting your information.");
+	// 		}
+	// 	});
+	// });
 
 });
 </script>

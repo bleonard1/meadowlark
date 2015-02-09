@@ -49,7 +49,7 @@ app.use(require("express-session")()); //pg 148
 
 
 //Flash msg
-app.use(function(req, res, next){
+app.use(function (req, res, next){
         // if there's a flash message, transfer
         // it to the context, then clear it
         res.locals.flash = req.session.flash;
@@ -61,20 +61,20 @@ app.use(function(req, res, next){
 
 
 // Show/hide Moca tests
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	res.locals.showTests = app.get("env") !== "production" && req.query.test === "1";
 	next();
 });
 
 // Weather widget
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	if (!res.locals.partials) res.locals.partials = {};
 	res.locals.partials.weather = getWeatherData();
 	next();
 });
 
 // File uploads
-app.use('/upload', function(req, res, next){
+app.use('/upload', function (req, res, next){
 	var now = Date.now();
 	jqupload.fileHandler({
 		uploadDir: function(){
@@ -108,7 +108,7 @@ app.use('/contest', routeContest);
 app.use('/contest/vacation-photos', routeContest);
 
 
-app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /data/data/nursery-rhymes (or whatever the issue is)
+app.get('/data/nursery-rhymes', function (req, res){ //Look to adjust pathing. /data/data/nursery-rhymes (or whatever the issue is)
 	res.json({
 		animal: 'squirrel',
 		bodyPart: 'tail',
@@ -117,7 +117,7 @@ app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /d
 	});
 });
 
-// app.post("/process", function(req, res) { // Pretty sure this doesn't work.
+// app.post("/process", function (req, res) { // Pretty sure this doesn't work.
 // 	console.log("Form  (from qs): " + req.query.form);
 // 	console.log("CSRF token (from hidden field): " + req.body._csrf);
 // 	console.log("Name :", req.body.name);
@@ -125,7 +125,7 @@ app.get('/data/nursery-rhymes', function(req, res){ //Look to adjust pathing. /d
 // 	res.redirect(303, "/thank-you"); //Redirect updates the URL field where render wouldn't.
 // });
 
-app.post('/process', function(req, res){
+app.post('/process', function (req, res){
 	if(req.xhr || req.accepts('json,html')==='json'){
 		// if there were an error, we would send { error: 'error description' }
 		res.send({ success: true });
@@ -135,12 +135,12 @@ app.post('/process', function(req, res){
 	}
 });
 
-app.get("/context/vacation-photos", function(req, res) {
+app.get("/context/vacation-photos", function (req, res) {
 	var now = new Date();
 	res.render("contest/vacation-photo", { year: now.getFullYear(), month: now.getMonth() });
 });
 
-app.post("/contest/vacation-photos/:year/:month", function(req, res) {
+app.post("/contest/vacation-photos/:year/:month", function (req, res) {
 	var form = new formidable.IncomingForm();
 	
 	form.parse(req, function(err, fields, files) {
@@ -157,7 +157,7 @@ app.post("/contest/vacation-photos/:year/:month", function(req, res) {
 	});
 });
 
-app.use("/upload", function(req, res, next) {
+app.use("/upload", function (req, res, next) {
 	var now = Date.now();
 	jqupload.fileHandler({
 		uploadDir: function() {
@@ -173,7 +173,7 @@ app.post("/newsletter", routeNewsletter);
 
 
 // Custom 404, note app.use (middleware)
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	res.status(404);
 	res.render("404", {title: "Whoopsie Daisy! - "});
 });
