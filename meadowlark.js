@@ -282,7 +282,7 @@ app.use(function(err, req, res, next){
  */
 app.listen( app.get("port"), function() {
 	// Fire it up, man!
-	console.log("Fire it up, man!");
+	console.log("Fire it up, man! Running in ", app.get("env").toUpperCase() ); // Can set env with NODE_ENV=production, etc in term. 
 });
 
 /**
