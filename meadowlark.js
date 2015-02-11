@@ -52,6 +52,44 @@ app.set("view engine", "hbs");
 app.set("port", process.env.PORT || 3000);
 app.disable('x-powered-by');
 
+//Failover mech
+app.use(function(req, res, next) {
+	// create a domain
+	var domain = require("domain").create();
+	// handle errors on this domain
+	domain.on("error", function(err) {
+		console.error("Domain error caught\n", + err.stack);
+		try {
+			// failsafe shitdown in 5 sec
+			setTimeout(function() {
+				console.error("Failsafe shutdown");
+				process.ext(1);
+			}, 5000);
+			// disconnect from cluster
+			var worker = require("cluster");
+			if (worker) worker.disconnect();
+
+			//stop taking new reqs
+			server.close();
+
+			try {
+				next(err);
+			} catch(err) {
+				// if Express error route failed, try plain Node res
+				console.error("express error mechanism failed. \n", err.stack);
+				res.statusCode = 500;
+				res.setHeader("content-type", "text/plain");
+				res.end("server error.");
+			}	
+
+		} catch(err) {
+			console.error("unable to send 500 response.\n", err.stack);
+		}
+
+	});
+	// start here, search domain.add(req);
+});
+
 // Expose public folder 
 app.use(express.static(__dirname + "/public"));
 
@@ -252,6 +290,17 @@ app.get('/data/nursery-rhymes', function (req, res){
 	});
 });
 
+// Handling exceptions tests
+app.get("/fail", function(req, res) {
+	throw new Error("Nope!");
+});
+
+app.get("/epic-fail", function (req, res) {
+	process.nextTick(function() {
+		throw new Error("Kaboom!");
+	});
+})
+
 /**
  * Custom 404
  */
@@ -280,10 +329,20 @@ app.use(function(err, req, res, next){
 /**
  * Make server go
  */
-app.listen( app.get("port"), function() {
-	// Fire it up, man!
+function startServer() {
+	app.listen( app.get("port"), function() {
+		// Fire it up, man!
 	console.log("Fire it up, man! Running in ", app.get("env").toUpperCase() ); // Can set env with NODE_ENV=production, etc in term. 
-});
+	});
+};
+
+if (require.main === module) {
+	//app runs direclty, start it.
+	startServer();
+} else {
+	// cluster it
+	module.exports = startServer;
+}
 
 /**
  * Shite

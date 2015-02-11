@@ -45,3 +45,4 @@ Temporary Items
 .apdisk
 node_modules
 npm_debug.log
+*.swp
