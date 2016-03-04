@@ -31,7 +31,8 @@ var nodemailer    = require("nodemailer");
 //     to: 'email-recipient@dot.com' // list of receivers
 //     subject: 'Your Meadowlark Travel Tour', // Subject line
 //     //text: 'Thank you againg for booking with us! Your doodad is going to be so awesome. We will take care of you!', // plaintext body
-//     html: '<b>Here is the HTML version!</b><p>Thank you againg for booking with us! Your doodad is going to be so awesome. We will take care of you!</p>' // html body
+//     html: '<b>Here is the HTML version!</b><p>Thank you againg for booking with us! Your doodad is going to be so awesome. We 
+//     will take care of you!</p>' // html body
 //     ,generateTextFromHtml:true
 // };
 
@@ -178,6 +179,16 @@ app.get("/about", function (req, res) {
 		copyrightYear: copyrightYear,
 		fortune: fortune.getFortune(),
 		pageTestScript: '/qa/tests-about.js'
+	});
+});
+
+/**
+ * About Route
+ */
+app.get("/contact", function (req, res) {
+	res.render("contact", {
+		title: "Contact - ",
+		copyrightYear: copyrightYear
 	});
 });
 
@@ -345,7 +356,7 @@ app.use(function(err, req, res, next){
 function startServer() {
 	app.listen( app.get("port"), function() {
 		// Fire it up, man!
-	console.log("Fire it up, man! Running in ", app.get("env").toUpperCase() ); // Can set env with NODE_ENV=production, etc in term. 
+	console.log("Fire it up, man! Running in " + app.get("env").toUpperCase() + ":" + app.get("port") ); // Can set env with NODE_ENV=production, etc in term. 
 	});
 };
 
