@@ -31,12 +31,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bleonard1/meadowlark"
+    "url": "https://github.com/bryanleonard/meadowlark"
   },
   "author": "Bryan Leonard",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bleonard1/meadowlark/issues"
+    "url": "https://github.com/bryanleonard/meadowlark/issues"
   },
-  "homepage": "https://github.com/bleonard1/meadowlark"
+  "homepage": "https://github.com/bryanleonard/meadowlark"
 }
